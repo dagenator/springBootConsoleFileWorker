@@ -1,18 +1,16 @@
 package SpringConsoleApplication;
 
-import SpringConsoleApplication.modules.module;
+import SpringConsoleApplication.modules.moduleInterface;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 @Service
 public class FileService {
@@ -20,7 +18,7 @@ public class FileService {
     File file;
     public void FindFileType(String line) throws FileNotFoundException {
         file = new File(line);
-        module finModule;
+        moduleInterface finModule;
         try{
             if(!file.exists()) throw new FileNotFoundException();
             var modules = GetModules(file);
@@ -32,22 +30,33 @@ public class FileService {
             System.out.println("Something goes wrong with beans. Maybe there is no beans for your file");
         }catch( FileNotFoundException ex ){
             System.out.println("there is no such file");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
 
-    public module[] GetModules(File f){
+    public moduleInterface[] GetModules(File f){
         ApplicationContext ctx =
-                new AnnotationConfigApplicationContext("com.example.SpringConsoleApplication.modules");
-        return ctx.getBeansOfType(module.class)
-                .entrySet()
-                .stream()
-                .filter( e -> e.getValue().formatCheck(f))
-                .toArray(module[]::new);
+                new AnnotationConfigApplicationContext(SpringBootConsoleApplication.class);
+        ArrayList<moduleInterface> list = new ArrayList<moduleInterface>();
+        for(var m: ctx.getBeansOfType(moduleInterface.class).values()){
+            if(m.formatCheck(f)) list.add((moduleInterface) m);
+        }
+        return    list.toArray(new moduleInterface[0]);
+        //var m1 = ctx.getBeansOfType(moduleInterface.class);
+        //var m2 =m1
+        //        .values().stream();
+        //var m4 = m2
+        //        .filter( e -> e.formatCheck(f));
+
+        //var m3 = m2
+         //       .toArray(moduleInterface[]::new);
+        //return m3;
 
     }
 
-    public module AskUserModule(module[] modules){
+    public moduleInterface AskUserModule(moduleInterface[] modules){
         System.out.println("Choose your fighter");
         for (int i = 0; i < modules.length; i++) {
             System.out.println((i+1)+" "+modules[i].getDescription());

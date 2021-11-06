@@ -1,12 +1,13 @@
 package SpringConsoleApplication.modules.txt;
 
-import SpringConsoleApplication.modules.module;
+import SpringConsoleApplication.modules.moduleInterface;
+import SpringConsoleApplication.modules.mp3.moduleTxtInterface;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 @Component
-public class SymbolRate implements module {
+public class SymbolRate implements moduleTxtInterface {
     @Override
     public boolean formatCheck(File f) {
         return false;
@@ -14,7 +15,7 @@ public class SymbolRate implements module {
 
     @Override
     public String getDescription() {
-        return null;
+        return "вывод частоты вхождения каждого символа";
     }
 
     @Override

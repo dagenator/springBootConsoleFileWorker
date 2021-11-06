@@ -1,8 +1,10 @@
 package SpringConsoleApplication.modules;
 
 import java.io.File;
+import java.io.IOException;
 
-public interface module {
+public interface moduleInterface {
+
 
     public boolean formatCheck(File f);
 

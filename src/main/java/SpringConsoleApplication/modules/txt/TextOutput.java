@@ -7,8 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 
 @Component
-public class LineCounter implements moduleTxtInterface {
-
+public class TextOutput implements moduleInterface {
     @Override
     public boolean formatCheck(File f) {
         return false;
@@ -16,7 +15,7 @@ public class LineCounter implements moduleTxtInterface {
 
     @Override
     public String getDescription() {
-        return "текстовый файл — подсчет и вывод количества строк";
+        return "вывод текста";
     }
 
     @Override
@@ -24,3 +23,4 @@ public class LineCounter implements moduleTxtInterface {
 
     }
 }
+
